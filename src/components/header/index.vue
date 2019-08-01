@@ -1,9 +1,7 @@
 <template>
-    <div id="main">
         <header id="header">
             <h1>{{title}}</h1>
         </header>
-    </div>
 </template>
 
 <script>

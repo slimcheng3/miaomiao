@@ -3,9 +3,9 @@
         <Header title="喵喵影院"></Header>
         <div id="content">
             <div class="cinema_menu">
-                <div class="city_switch">
+                <router-link tag="div" class="city_switch">
                     全城 <i class="iconfont icon-lower-triangle"></i>
-                </div>
+                </router-link>
                 <div class="brand_swtich">
                     品牌 <i class="iconfont icon-lower-triangle"></i>
                 </div>
