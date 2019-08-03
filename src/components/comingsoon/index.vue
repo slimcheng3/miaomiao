@@ -1,10 +1,12 @@
 <template>
     <div class="movie_body">
+        <Loader v-if="isLoading"></Loader>
+        <Scroller v-if="!isLoading">
         <ul>
             <li v-for="item in comingList" :key="item.id">
-                <div class="pic_show"><img :src="item.img | imgSize('120.180')"></div>
+                <div class="pic_show" @click="handleToDetail(item.id)"><img :src="item.img | imgSize('120.180')"></div>
                 <div class="info_list">
-                    <h2>{{item.nm}}</h2>
+                    <h2 @click="handleToDetail(item.id)">{{item.nm}}</h2>
                     <p><span class="person">{{item.wish}}</span> 人想看</p>
                     <p>{{item.star}}</p>
                     <p>{{item.rt}}上映</p>
@@ -14,6 +16,7 @@
                 </div>
             </li>
         </ul>
+        </Scroller>
     </div>
 </template>
 
@@ -23,15 +26,25 @@
         data(){
             return{
                 comingList:[],
+                isLoading:true
             }
         },
-        mounted() {
-            this.$axios.get('/api/movieComingList?cityId=10').then((res) => {
+        activated() {
+            var cityId = this.$store.state.city.id;
+            if(this.preCityId === cityId){return;}
+            this.isLoading = true;
+            this.$axios.get('/api/movieComingList?cityId=' + cityId).then((res) => {
                 var msg = res.data.msg;
                 if(msg === 'ok'){
+                    this.isLoading = false;
                     this.comingList = res.data.data.comingList;
                 }
             })
+        },
+        methods:{
+            handleToDetail(movieId) {
+                this.$router.push({name: 'detailComingsoon', params:{id:movieId}})
+            },
         }
     }
 </script>

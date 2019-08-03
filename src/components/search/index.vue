@@ -8,7 +8,8 @@
         </div>
         <div class="search_result">
             <h3>电影/电视剧/综艺</h3>
-            <ul>
+            <Loader v-if="isLoading"></Loader>
+            <ul v-if="!isLoading">
                 <li v-for="item in cinemaList" :key="item.id">
                     <div class="img"><img :src="item.img | imgSize('120.180')"></div>
                     <div class="info">
@@ -29,7 +30,8 @@
         data(){
             return{
                 message: null,
-                cinemaList: []
+                cinemaList: [],
+                isLoading: false
             }
         },
         methods:{
@@ -43,13 +45,16 @@
             message(newVal){
                 var CancelToken = this.$axios.CancelToken;
                 var source = CancelToken.source();
+                var cityId = this.$store.state.city.id
                 this.cancelRequest();
-                this.$axios.get('/api/searchList?cityId=10&kw=' + newVal, {cancelToken: new this.$axios.CancelToken(function executor(c) {
+                this.isLoading = true;
+                this.$axios.get('/api/searchList?cityId=' + cityId + '&kw=' + newVal, {cancelToken: new this.$axios.CancelToken(function executor(c) {
                         source = c;
                     })}).then((res) => {
                     var msg = res.data.msg;
                     var movies = res.data.data.movies;
                     if(msg && movies){
+                        this.isLoading = false;
                         this.cinemaList = movies.list
                     }
                 }).catch((err) => {

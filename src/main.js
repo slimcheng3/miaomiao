@@ -8,6 +8,12 @@ Vue.prototype.$axios = axios;
 Vue.filter('imgSize', (url,size) => {
   return url.replace(/w\.h/,size);
 });
+import Scroller from '@/components/scroller'
+import Loader from '@/components/loader'
+Vue.component('Scroller',Scroller)
+Vue.component('Loader',Loader)
+
+
 Vue.config.productionTip = false;
 
 new Vue({
